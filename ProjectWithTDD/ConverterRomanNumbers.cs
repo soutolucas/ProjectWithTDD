@@ -1,42 +1,41 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace ProjectWithTDD
 {
     public class ConverterRomanNumbers
     {
-        //private static Dictionary<char, int> isRomanNumbers;
-        //private static string[,] romanNumbers = { {"I", "1"}, {"V", "5"}, {"X", "10"}, {"L", "50"}, {"C", "100"}, {"D", "500"}, {"M", "1000"} };
-        private static char[] romanNumbers = { 'I', 'V', 'X', 'L', 'C', 'D', 'M' };
+        private static string[] invalidNumbers = { "IL", "IC", "ID", "IM", "LC", "LD", "LM", "VX", "DM" };
         private static List<int> listNumbers;
 
         public static int Convert(string inputNumber)
         {
-            int numberResult = 0, currentNumber, lastNumber = FromRomanToNumber(inputNumber[0]);
+            if (!IsRomanNumber(inputNumber))
+                return 0;
 
-            if (IsRomanNumber(inputNumber))
+            int numberResult = 0, currentNumber, lastNumber = listNumbers[0];
+
+            foreach (var number in listNumbers)
             {
-                foreach (var n in inputNumber)
+                currentNumber = number;
+
+                if (currentNumber > lastNumber)
                 {
-                    currentNumber = FromRomanToNumber(n);
-
-                    if (currentNumber > lastNumber)
-                    {
-                        currentNumber -= lastNumber;
-                        numberResult -= lastNumber;
-                    }
-
-                    numberResult += currentNumber;
-                    lastNumber = currentNumber;
+                    currentNumber -= lastNumber;
+                    numberResult -= lastNumber;
                 }
+
+                numberResult += currentNumber;
+                lastNumber = currentNumber;
             }
 
             return numberResult;
         }
 
-        // X
         private static bool IsRomanNumber(string inputNumber)
         {
+            if (!IsConsistentNumber(inputNumber))
+                return false;
+
             listNumbers = new List<int>();
 
             bool isLargerNumber = false;
@@ -48,7 +47,7 @@ namespace ProjectWithTDD
                 currentNumber = FromRomanToNumber(n);
                 listNumbers.Add(currentNumber);
 
-                //Don't is permitted have more that one number before larger number
+                //Isn't permitted have more that one number before larger number
                 if (currentNumber == lastNumber)
                     countEquals++;
                 if (currentNumber > lastNumber)
@@ -61,6 +60,18 @@ namespace ProjectWithTDD
             return IsRepeatedNumber(listNumbers);
         }
 
+        private static bool IsConsistentNumber(string inputNumber)
+        {
+            foreach (var notNumber in invalidNumbers)
+            {
+                //If the number contains a invalid number it's not a number Roman
+                if (inputNumber.Contains(notNumber))
+                    return false;
+            }
+
+            return true;
+        }
+
         private static bool IsRepeatedNumber(List<int> numbers)
         {
             int count = 0;
@@ -71,6 +82,7 @@ namespace ProjectWithTDD
                     if (l == i) count++;
                 }
 
+                //If a number is repeated more that three times it's not number Roman
                 if (count > 3)
                     return false;
                 count = 0;
@@ -100,55 +112,5 @@ namespace ProjectWithTDD
             }
             return 0;
         }
-
     }
 }
-/* switch (n)
-                {
-                    case 'I':
-                        numberResult += 1;
-                        break;
-                    case 'V':
-                        numberResult += 5;
-                        break;
-                    case 'X':
-                        numberResult += 10;
-                        break;
-                    case 'L':
-                        numberResult += 50;
-                        break;
-                    case 'C':
-                        numberResult += 100;
-                        break;
-                    case 'D':
-                        numberResult += 500;
-                        break;
-                    case 'M':
-                        numberResult += 1000;
-                        break;
-                }*/
-
-//switch (n)
-//{
-//    case 'I':
-//        isRomanNumbers['I'] += 1;
-//        break;
-//    case 'V':
-//        isRomanNumbers['V'] += 1;
-//        break;
-//    case 'X':
-//        isRomanNumbers['X'] += 1;
-//        break;
-//    case 'L':
-//        isRomanNumbers['L'] += 1;
-//        break;
-//    case 'C':
-//        isRomanNumbers['C'] += 1;
-//        break;
-//    case 'D':
-//        isRomanNumbers['D'] += 1;
-//        break;
-//    case 'M':
-//        isRomanNumbers['M'] += 1;
-//        break;
-//}
