@@ -6,6 +6,15 @@ namespace ProjectWithTDD
     {
         private static string[] invalidNumbers = { "IL", "IC", "ID", "IM", "LC", "LD", "LM", "VX", "DM" };
         private static List<int> listNumbers;
+        private static Dictionary<char, int> romanNumbers = new Dictionary<char, int>() {
+                {'I', 1},
+                {'V', 5},
+                {'X', 10},
+                {'L', 50},
+                {'C', 100},
+                {'D', 500},
+                {'M', 1000}
+            };
 
         public static int Convert(string inputNumber)
         {
@@ -19,10 +28,7 @@ namespace ProjectWithTDD
                 currentNumber = number;
 
                 if (currentNumber > lastNumber)
-                {
-                    currentNumber -= lastNumber;
-                    numberResult -= lastNumber;
-                }
+                    currentNumber -= lastNumber * 2;
 
                 numberResult += currentNumber;
                 lastNumber = currentNumber;
@@ -44,10 +50,10 @@ namespace ProjectWithTDD
 
             foreach (var n in inputNumber)
             {
-                currentNumber = FromRomanToNumber(n);
+                currentNumber = romanNumbers[n];
                 listNumbers.Add(currentNumber);
 
-                //Isn't permitted have more that one number before larger number
+                //Don't is permitted have more that one number before larger number
                 if (currentNumber == lastNumber)
                     countEquals++;
                 if (currentNumber > lastNumber)
@@ -57,7 +63,7 @@ namespace ProjectWithTDD
                 lastNumber = currentNumber;
             }
 
-            return IsRepeatedNumber(listNumbers);
+            return NotRepeatedNumber(listNumbers);
         }
 
         private static bool IsConsistentNumber(string inputNumber)
@@ -72,7 +78,7 @@ namespace ProjectWithTDD
             return true;
         }
 
-        private static bool IsRepeatedNumber(List<int> numbers)
+        private static bool NotRepeatedNumber(List<int> numbers)
         {
             int count = 0;
             foreach (var l in listNumbers)
@@ -89,28 +95,6 @@ namespace ProjectWithTDD
             }
 
             return true;
-        }
-
-        private static int FromRomanToNumber(char n)
-        {
-            switch (n)
-            {
-                case 'I':
-                    return 1;
-                case 'V':
-                    return 5;
-                case 'X':
-                    return 10;
-                case 'L':
-                    return 50;
-                case 'C':
-                    return 100;
-                case 'D':
-                    return 500;
-                case 'M':
-                    return 1000;
-            }
-            return 0;
         }
     }
 }

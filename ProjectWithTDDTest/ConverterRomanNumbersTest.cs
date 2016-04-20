@@ -107,6 +107,20 @@ namespace ProjectWithTDDTest
             Assert.AreEqual(9, number);
         }
 
+        [TestMethod]
+        public void ConvertNumberXC()
+        {
+            int number = ConverterRomanNumbers.Convert("XC");
+            Assert.AreEqual(90, number);
+        }
+
+        [TestMethod]
+        public void ConvertNumberCM()
+        {
+            int number = ConverterRomanNumbers.Convert("CM");
+            Assert.AreEqual(900, number);
+        }
+
         #region Invalid Numbers
         [TestMethod]
         public void ConvertInvalidNumberIIII()
@@ -123,9 +137,30 @@ namespace ProjectWithTDDTest
         }
 
         [TestMethod]
+        public void ConvertInvalidNumberIL()
+        {
+            int number = ConverterRomanNumbers.Convert("IL");
+            Assert.AreEqual(0, number);
+        }
+
+        [TestMethod]
         public void ConvertInvalidNumberIC()
         {
             int number = ConverterRomanNumbers.Convert("IC");
+            Assert.AreEqual(0, number);
+        }
+
+        [TestMethod]
+        public void ConvertInvalidNumberID()
+        {
+            int number = ConverterRomanNumbers.Convert("ID");
+            Assert.AreEqual(0, number);
+        }
+
+        [TestMethod]
+        public void ConvertInvalidNumberIM()
+        {
+            int number = ConverterRomanNumbers.Convert("IM");
             Assert.AreEqual(0, number);
         }
         #endregion
